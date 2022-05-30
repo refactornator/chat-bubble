@@ -5,9 +5,11 @@ import { CreateLocalMediaOptions, LocalTrack } from "@mux/spaces-web";
 import Participant from "./Participant";
 
 import { useLocalParticipant } from "../hooks/useLocalParticipant";
+import { useParticipants } from "../hooks/useParticipants";
 
 export default function Stage(): JSX.Element {
   const localParticipant = useLocalParticipant();
+  const participants = useParticipants();
 
   useEffect(() => {
     async function publishTracks() {
@@ -34,5 +36,12 @@ export default function Stage(): JSX.Element {
     publishTracks();
   }, [localParticipant]);
 
-  return <Participant participant={localParticipant} />;
+  return (
+    <>
+      <Participant participant={localParticipant} />
+      {participants.map((participant) => (
+        <Participant key={participant.connectionId} participant={participant} />
+      ))}
+    </>
+  );
 }
