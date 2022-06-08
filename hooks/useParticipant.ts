@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSpace } from "./useSpace";
 
 export interface ParticipantState {
+  isLocal: boolean;
   isMuted: boolean;
   isSpeaking: boolean;
   isCameraOff: boolean;
@@ -22,15 +23,21 @@ export function useParticipant(
   const [isMuted, setMuted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isCameraOff, setIsCameraOff] = useState(false);
-  const [subscribedTracks, setSubscribedTracks] = useState([] as Track[]);
+  const [subscribedTracks, setSubscribedTracks] = useState<Track[]>([]);
+
+  const isLocal = participant instanceof LocalParticipant;
 
   const onPublicationsChanged = useCallback(() => {
     const tracks: Track[] = [];
     participant.getAudioTracks().forEach((track) => {
-      tracks.push(track);
+      if (track.track) {
+        tracks.push(track);
+      }
     });
     participant.getVideoTracks().forEach((track) => {
-      tracks.push(track);
+      if (track.track) {
+        tracks.push(track);
+      }
     });
     setSubscribedTracks(tracks);
   }, [participant]);
@@ -94,6 +101,7 @@ export function useParticipant(
   }, [participant, onPublicationsChanged]);
 
   return {
+    isLocal,
     isMuted,
     isSpeaking,
     isCameraOff,
