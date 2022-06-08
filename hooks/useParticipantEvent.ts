@@ -11,6 +11,28 @@ interface Props {
   callback: () => void;
 }
 
+export const useTrackPublished = (
+  callback: () => void,
+  participant?: LocalParticipant | RemoteParticipant
+) => {
+  useParticipantEvent({
+    participant,
+    event: ParticipantEvent.TrackPublished,
+    callback,
+  });
+};
+
+export const useTrackUnpublished = (
+  callback: () => void,
+  participant?: LocalParticipant | RemoteParticipant
+) => {
+  useParticipantEvent({
+    participant,
+    event: ParticipantEvent.TrackUnpublished,
+    callback,
+  });
+};
+
 export const useParticipantEvent = ({
   participant,
   event,

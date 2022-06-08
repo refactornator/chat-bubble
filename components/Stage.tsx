@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Box, Center, Flex, Spinner } from "@chakra-ui/react";
-import {
-  CreateLocalMediaOptions,
-  LocalTrack,
-  ParticipantEvent,
-} from "@mux/spaces-web";
-const { TrackPublished, TrackUnpublished } = ParticipantEvent;
+import { CreateLocalMediaOptions, LocalTrack } from "@mux/spaces-web";
 
 import { useLocalParticipant } from "../hooks/useLocalParticipant";
-import { useParticipantEvent } from "../hooks/useParticipantEvent";
+import {
+  useTrackPublished,
+  useTrackUnpublished,
+} from "../hooks/useParticipantEvent";
 import { useParticipants } from "../hooks/useParticipants";
 
 import Participant from "./Participant";
@@ -18,17 +16,8 @@ export default function Stage(): JSX.Element {
   const participants = useParticipants();
   const [tracksPublished, setTracksPublished] = useState(false);
 
-  useParticipantEvent({
-    participant: localParticipant,
-    event: TrackPublished,
-    callback: () => setTracksPublished(true),
-  });
-
-  useParticipantEvent({
-    participant: localParticipant,
-    event: TrackUnpublished,
-    callback: () => setTracksPublished(false),
-  });
+  useTrackPublished(() => setTracksPublished(true), localParticipant);
+  useTrackUnpublished(() => setTracksPublished(false), localParticipant);
 
   useEffect(() => {
     if (!localParticipant) {

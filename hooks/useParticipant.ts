@@ -16,7 +16,7 @@ export interface ParticipantState {
 }
 
 export function useParticipant(
-  participant: LocalParticipant | RemoteParticipant,
+  participant: LocalParticipant | RemoteParticipant
 ): ParticipantState {
   const [isMuted, setMuted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -93,7 +93,7 @@ export function useParticipant(
       participant.off(ParticipantEvent.TrackSubscribed, onPublicationsChanged);
       participant.off(
         ParticipantEvent.TrackUnsubscribed,
-        onPublicationsChanged,
+        onPublicationsChanged
       );
     };
   }, [participant, onPublicationsChanged]);
