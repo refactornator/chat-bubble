@@ -6,8 +6,8 @@ import { MuxContext } from "./MuxContext";
 /**
  * Returns localParticipant instance passed to or created by closest <SpaceProvider>.
  */
-export const useLocalParticipant = (): LocalParticipant => {
+export const useLocalParticipant = (): LocalParticipant | null => {
   const mux = useContext(MuxContext);
 
-  return mux.localParticipant;
+  return mux.localParticipant ?? null;
 };

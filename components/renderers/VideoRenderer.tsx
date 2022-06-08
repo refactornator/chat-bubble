@@ -1,14 +1,19 @@
 import { Track } from "@mux/spaces-web";
 import React, { useEffect, useRef } from "react";
 
-import styles from "../../styles/VideoRenderer.module.css";
-
 interface Props {
   local: boolean;
   track?: Track;
+  hidden: boolean;
+  onLoad: () => void;
 }
 
-export default function VideoRenderer({ local, track }: Props): JSX.Element {
+export default function VideoRenderer({
+  local,
+  track,
+  hidden,
+  onLoad = () => {},
+}: Props): JSX.Element {
   const videoEl = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -24,12 +29,18 @@ export default function VideoRenderer({ local, track }: Props): JSX.Element {
   return (
     <video
       ref={videoEl}
-      className={styles.video}
       autoPlay
       playsInline
       style={{
+        width: "250px",
+        height: "250px",
+        maxWidth: "250px",
+        objectFit: "cover",
+        borderRadius: "50%",
         transform: local ? "scaleX(-1)" : "scaleX(1)",
+        display: hidden ? "none" : "inline",
       }}
+      onLoadedData={onLoad}
     />
   );
 }
