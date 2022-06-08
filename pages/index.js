@@ -12,26 +12,18 @@ const SPACE_ID = "3PeWMqP1ogDeAAUyQ8NTSKDN3GihgfRFQj9CNG95jgY";
 export default function Home() {
   const router = useRouter();
   const { isReady: isRouterReady } = router;
-  const { participantId } = router.query;
   const [spaceJWT, setSpaceJWT] = useState("");
 
   useEffect(() => {
     if (!isRouterReady) return;
-    if (!participantId) {
-      console.warn("No participant id specified");
-      return;
-    }
 
     const fetchJWT = async () => {
-      const response = await fetch(
-        `/api/token/${SPACE_ID}?participantId=${participantId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/token/${SPACE_ID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -42,7 +34,7 @@ export default function Home() {
     };
 
     fetchJWT();
-  }, [isRouterReady, participantId]);
+  }, [isRouterReady]);
 
   return (
     <div className={styles.container}>

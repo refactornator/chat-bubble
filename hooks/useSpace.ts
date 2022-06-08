@@ -6,8 +6,8 @@ import { MuxContext } from "./MuxContext";
 /**
  * Returns an instance of space passed to or created by closest <SpaceProvider>.
  */
-export const useSpace = (): Space | null => {
+export const useSpace = (): Space => {
   const mux = useContext(MuxContext);
 
-  return mux?.space ?? null;
+  return mux.space;
 };

@@ -7,7 +7,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@mux/spaces-web": "^0.1.1",
+    "framer-motion": "^6.3.10",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.6",

@@ -65,11 +65,11 @@ export const SpaceProvider = ({ jwt, children }: Props) => {
     };
   }, [jwt]);
 
-  return (
+  return spaceRef.current && localParticipant ? (
     <MuxContext.Provider
       value={{ space: spaceRef.current, participants, localParticipant }}
     >
       {children}
     </MuxContext.Provider>
-  );
+  ) : null;
 };

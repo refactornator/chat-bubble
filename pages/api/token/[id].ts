@@ -8,13 +8,12 @@ type ResponseData = {
   spaceJWT: string;
 };
 
-function signJWT(spaceId: string, participantId: string): ResponseData {
+function signJWT(spaceId: string): ResponseData {
   const JWT = jwt.sign(
     {
       kid: MUX_SIGNING_KEY ?? "",
       aud: "rt",
       sub: spaceId,
-      participant_id: participantId,
     },
     Buffer.from(MUX_PRIVATE_KEY ?? "", "base64"),
     { algorithm: "RS256", expiresIn: "1h" },
@@ -27,13 +26,13 @@ export default function handler(
   res: NextApiResponse<ResponseData>,
 ) {
   const {
-    query: { id, participantId },
+    query: { id },
     method,
   } = req;
   if (method === "GET") {
     res
       .status(StatusCodes.OK)
-      .json(signJWT(id as string, participantId as string));
+      .json(signJWT(id as string));
   } else {
     res.status(StatusCodes.METHOD_NOT_ALLOWED);
   }
