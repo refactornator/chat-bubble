@@ -5,8 +5,10 @@ import {
   LocalTrack,
   ParticipantEvent,
 } from "@mux/spaces-web";
+const { TrackPublished, TrackUnpublished } = ParticipantEvent;
 
 import { useLocalParticipant } from "../hooks/useLocalParticipant";
+import { useParticipantEvent } from "../hooks/useParticipantEvent";
 import { useParticipants } from "../hooks/useParticipants";
 
 import Participant from "./Participant";
@@ -15,6 +17,18 @@ export default function Stage(): JSX.Element {
   const localParticipant = useLocalParticipant();
   const participants = useParticipants();
   const [tracksPublished, setTracksPublished] = useState(false);
+
+  useParticipantEvent({
+    participant: localParticipant,
+    event: TrackPublished,
+    callback: () => setTracksPublished(true),
+  });
+
+  useParticipantEvent({
+    participant: localParticipant,
+    event: TrackUnpublished,
+    callback: () => setTracksPublished(false),
+  });
 
   useEffect(() => {
     if (!localParticipant) {
@@ -39,31 +53,7 @@ export default function Stage(): JSX.Element {
       }
     }
 
-    const handleTrackPublished = () => {
-      setTracksPublished(true);
-    };
-    const handleTrackUnpublished = () => {
-      setTracksPublished(false);
-    };
-
     publishTracks();
-
-    localParticipant.on(ParticipantEvent.TrackPublished, handleTrackPublished);
-    localParticipant.on(
-      ParticipantEvent.TrackUnpublished,
-      handleTrackUnpublished
-    );
-
-    return () => {
-      localParticipant.off(
-        ParticipantEvent.TrackPublished,
-        handleTrackPublished
-      );
-      localParticipant.off(
-        ParticipantEvent.TrackUnpublished,
-        handleTrackUnpublished
-      );
-    };
   }, [localParticipant]);
 
   return (
